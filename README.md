@@ -8,7 +8,7 @@
 这个项目的大部分代码来自于Solideye by Jayveer，Gcx by Jayveer
 ## 构建
 ```
-clang bin.cpp Blowfish.cpp crypto.cpp decryptor.cpp gcx.cpp md5.cpp main.cpp -o gcxtool.exe -std=c++17
+VS code 使用cmake tool扩展，GCC工具包进行构建
 ```
 
 ## 使用方法

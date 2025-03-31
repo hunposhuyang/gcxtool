@@ -1,8 +1,8 @@
 # gcxtool
 合金装备4中，stage/init/scenerio.gcx这个文件中包含游戏里的界面文本，为了本地化这些文本，我需要将里面的字符串解密并导出，这个工具就是为此而生。
 这个程序有以下的功能：
-- 从scenerio.gcx中解密并导出stringData部分为bin文件，路径为程序目录/scenerio_strres/
-- 从scenerio.gcx和bin文件合并一个scenerio.gcx
+- 从scenerio.gcx中解密并导出stringData部分为bin文件，路径为程序目录/gcxFilename_strres/scenario.bin
+- 从scenerio.gcx和bin文件合并一个scenerio.gcx,路径为程序目录/gcxFilename_strres/scenario.gcx
 - 支持psn版游戏加密的scenerio.gcx
 本程序只适用于以上所说的位于stage/init里面的scenerio.gcx文件，不能解析打包其他gcx文件。
 这个项目的大部分代码来自于Solideye by Jayveer，Gcx by Jayveer

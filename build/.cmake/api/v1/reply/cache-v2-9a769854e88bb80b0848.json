@@ -159,7 +159,7 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : "c:/mingw64/bin/g++.exe"
+			"value" : "C:/mingw64/bin/g++.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER_AR",
@@ -303,7 +303,7 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : "c:/mingw64/bin/gcc.exe"
+			"value" : "C:/mingw64/bin/gcc.exe"
 		},
 		{
 			"name" : "CMAKE_C_COMPILER_AR",

@@ -13,10 +13,10 @@ file(REMOVE_RECURSE
   "CMakeFiles/gcxtool.dir/main.cpp.obj.d"
   "CMakeFiles/gcxtool.dir/md5.cpp.obj"
   "CMakeFiles/gcxtool.dir/md5.cpp.obj.d"
-  "gcxtool.exe"
-  "gcxtool.exe.manifest"
-  "gcxtool.pdb"
-  "libgcxtool.dll.a"
+  "F:/GitRepos/gcxtool/gcxtool.exe"
+  "F:/GitRepos/gcxtool/gcxtool.exe.manifest"
+  "F:/GitRepos/gcxtool/gcxtool.pdb"
+  "F:/GitRepos/gcxtool/libgcxtool.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.

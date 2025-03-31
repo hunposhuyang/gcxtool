@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "gcxtool.exe"
+			"path" : "F:/GitRepos/gcxtool/gcxtool.exe"
 		},
 		{
-			"path" : "gcxtool.pdb"
+			"path" : "F:/GitRepos/gcxtool/gcxtool.pdb"
 		}
 	],
 	"backtrace" : 1,

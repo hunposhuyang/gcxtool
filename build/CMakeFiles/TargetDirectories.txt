@@ -1,0 +1,3 @@
+F:/GitRepos/gcxtool/build/CMakeFiles/gcxtool.dir
+F:/GitRepos/gcxtool/build/CMakeFiles/edit_cache.dir
+F:/GitRepos/gcxtool/build/CMakeFiles/rebuild_cache.dir

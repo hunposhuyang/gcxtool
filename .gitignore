@@ -1,2 +1,7 @@
 gcxtool.exe
 /build
+gcxtool_alterable_text_lenth.exe
+scenerio.gcx
+scenerioMg_setup.gcx
+scenerio_strres/scenerio.bin
+scenerioMg_setup_strres/scenerio.bin

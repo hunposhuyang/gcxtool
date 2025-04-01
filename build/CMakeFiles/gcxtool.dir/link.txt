@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\gcxtool.dir/objects.a
-C:\mingw64\bin\ar.exe qc CMakeFiles\gcxtool.dir/objects.a @CMakeFiles\gcxtool.dir\objects1.rsp
-C:\mingw64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\gcxtool.dir/objects.a -Wl,--no-whole-archive -o F:\GitRepos\gcxtool\gcxtool.exe -Wl,--out-implib,F:\GitRepos\gcxtool\libgcxtool.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\gcxtool.dir\linkLibs.rsp

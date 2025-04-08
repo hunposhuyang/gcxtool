@@ -9,3 +9,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #设置可执行文件的名称和路径
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR})
+
+#设置静态链接
+# 设置编译器选项为静态链接
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
+set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
+set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
+# 强制使用静态版本的 C++ 标准库
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")

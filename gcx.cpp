@@ -1,4 +1,10 @@
 #include "gcx.h"
+#include <filesystem> // 需要 C++17 支持
+#include <fstream>
+#include <stdexcept>
+
+namespace fs = std::filesystem; // 命名空间别名
+
 Gcx::Gcx(std::string filename) {
 	this->gcxfilepath = filename;
 	initData();
@@ -195,10 +201,20 @@ void Gcx::CreateOffsetStringMap() {
 }
 
 void Gcx::save(const std::string& filename) {
+    // 1. 检查文件是否存在，如果存在则备份
+    if (fs::exists(filename)) {
+        const std::string backupName = filename + "_write.bak";
+        if (fs::exists(backupName)) {
+            fs::remove(backupName); // 删除旧备份
+        }
+        fs::rename(filename, backupName); // 创建新备份
+    }
+
+    // 2. 写入新数据到文件
     std::ofstream fs(filename, std::ios::binary);
     if (!fs) {
         throw std::runtime_error("无法打开文件进行写入");
     }
-    fs.write(reinterpret_cast<char*>(data), size);
-    fs.close();
+    fs.write(reinterpret_cast<const char*>(data), size); // 假设 data 是 const
+    // fs.close(); // 可省略，析构时自动关闭
 }

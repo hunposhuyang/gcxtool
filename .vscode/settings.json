@@ -1,4 +1,9 @@
 {
+    
+    "cmake.debugConfig": {
+    "args": ["-x", "F:/Amgs4items/MGS4render/scenerio/_stage/init/scenerio.gcx"]
+    },
+        
     "files.associations": {
         "xstring": "cpp",
         "vector": "cpp",

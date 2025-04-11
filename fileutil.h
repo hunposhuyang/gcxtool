@@ -74,6 +74,12 @@ std::string getCurrentDir(std::string& output) {
 }
 
 inline
+std::string getFileDirName(std::string& output) {
+	std::filesystem::path p{ output };
+	return p.parent_path().filename().u8string();
+}
+
+inline
 std::string getExtension(const std::string& output) {
 	std::filesystem::path p{ output };
 	return p.extension().u8string();

@@ -46,12 +46,9 @@ void FileCrypt(bool mode, const char* gcxFilepath, const char* Key) {
 }
 
 void ExtractStringData(Gcx &gcx) {
-    if (!isDirectory(gcx.gcxfilepath)) {
-        std::cout << "Not a directory" << std::endl;
-        return;
-    }
     gcx.CreateOffsetStringMap();
-    std::string output = getExtensionlessName(gcx.gcxfilepath) + "_" + getCurrentDir(gcx.gcxfilepath) + ".txt";
+    std::filesystem::path gcxPath(gcx.gcxfilepath);
+    std::string output = gcxPath.parent_path().u8string() + "/" + getExtensionlessName(gcx.gcxfilepath) + "_" + getFileDirName(gcx.gcxfilepath) + ".txt";
     std::ofstream offsetFile(output);
     if (!offsetFile.is_open()) {
         std::cerr << "Failed to create offset file" << std::endl;
@@ -117,10 +114,7 @@ int main(int argc, char* argv[]) {
         Gcx gcx(gcxFile);
         gcx.open();
         txt.WriteStringToGcxdata(gcx);
-
-        std::string backupFile = std::string(gcxFile) + ".bak";
-        copyFile(gcxFile, backupFile);
-
+        
         gcx.save(gcxFile);
         if (key != nullptr) {
             FileCrypt(true, gcxFile, key); // 加密文件

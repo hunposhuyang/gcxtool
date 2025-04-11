@@ -1,4 +1,3 @@
-
 ////////////////////////////////////////////////////////////////////////////
 ///
 // BlowFish.cpp
@@ -8,7 +7,7 @@
 
 #include <cstring>
 #include <stdexcept>
-#include "Blowfish.h"
+#include "blowfish.h"
 
 //Initialization with a fixed string which consists of the hexadecimal digits of PI (less the initial 3)
 //P-array, 18 32-bit subkeys
@@ -298,7 +297,7 @@ CBlowFish::CBlowFish(unsigned char* ucKey, size_t keysize, const SBlock& roChain
 	unsigned char aucLocalKey[56];
 	unsigned int i, j;
 	memcpy(aucLocalKey, ucKey, keysize);
-	//Reflexive Initialization of the Blowfish.
+	//Reflexive Initialization of the blowfish.
 	//Generating the Subkeys from the Key flood P and S boxes with PI
 	memcpy(m_auiP, scm_auiInitP, sizeof m_auiP);
 	memcpy(m_auiS, scm_auiInitS, sizeof m_auiS);
@@ -325,7 +324,7 @@ CBlowFish::CBlowFish(unsigned char* ucKey, size_t keysize, const SBlock& roChain
 		}
 		m_auiP[i] ^= x;
 	}
-	//Reflect P and S boxes through the evolving Blowfish
+	//Reflect P and S boxes through the evolving blowfish
 	SBlock block(0UL, 0UL); //all-zero block
 	for (i = 0; i < 18; )
 		Encrypt(block), m_auiP[i++] = block.m_uil, m_auiP[i++] = block.m_uir;

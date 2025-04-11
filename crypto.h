@@ -1,6 +1,6 @@
 #pragma once
 #include "decryptor.h"
-#include "Blowfish.h"
+#include "blowfish.h"
 #include "md5.h"
 #include "fileutil.h"
 

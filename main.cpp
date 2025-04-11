@@ -1,9 +1,8 @@
-﻿#include<stdio.h>
-#include "gcx.h"
+#include <iostream>
 #include "fileutil.h"
-#include"crypto.h"
-#include <string>
-#include <cstring>
+#include "crypto.h"
+#include "gcx.h"
+#include "string.h"
 bool checkKeySet(const char* Key) {
 	if (Key == NULL) {
 		printf("Key not set, set key with -k. Usually this is the path to where the file resides");
@@ -24,7 +23,7 @@ bool checkFileExists(const char* filename) {
 	return 1;
 }
 
-void cliCrypt(bool mode,const char* gcxFilepath, const char* Key) {
+void FileCrypt(bool mode,const char* gcxFilepath, const char* Key) {
     std::string input = gcxFilepath;
     std::string outputFile = gcxFilepath;
     resetDir(outputFile);
@@ -40,7 +39,7 @@ void cliCrypt(bool mode,const char* gcxFilepath, const char* Key) {
     }
     else {
         // 创建一个 gcxFile 的备份
-        std::string backupFile = input + ".bak"; // 生成备份文件名
+        std::string backupFile = input + "_enc.bak"; // 生成备份文件名
         if (!copyFile(input, backupFile)) {      // 调用 copyFile 函数复制文件
             printf("Failed to create backup file: %s\n", backupFile.c_str());
             return;
@@ -49,90 +48,76 @@ void cliCrypt(bool mode,const char* gcxFilepath, const char* Key) {
     }
 }
 
-void exportResources(Gcx& gcx, const std::string& input, std::string& output) {
+void ExtractStringData(Gcx &gcx){
 
-	std::string foldername = getExtensionlessName(input) + "_strres";
-	updateDir(foldername, output);
 
-	std::string binFilename = "scenerio.bin";
-	gcx.outStringTableData(binFilename, output);
-    resetDir(output);
+    if (!isDirectory(gcx.gcxfilepath)) {
+        std::cout << "Not a directory" << std::endl;
+        return;
+    }
+    gcx.CreateOffsetStringMap();
+    // 创建一个文件并将字符串表写入文件,编码为utf-8
+    std::string output = getExtensionlessName(gcx.gcxfilepath) + "_" + getCurrentDir(gcx.gcxfilepath)+".txt";
+    std::ofstream offsetFile(output);
+    if (!offsetFile.is_open()) {
+        std::cerr << "Failed to create offset file" << std::endl;
+        return;
+    }
+
+    // 写入 UTF-8 BOM (EF BB BF)
+    unsigned char bom[] = { 0xEF, 0xBB, 0xBF };
+    offsetFile.write(reinterpret_cast<char*>(bom), sizeof(bom));
+
+    // 设置输出格式为十六进制，前面补0，8位宽度
+    offsetFile << std::hex << std::setfill('0');
+
+    for (const auto& table : gcx.stringTables) {
+        offsetFile << "0x" << std::setw(8) << table.offset << "\t" << table.string << std::endl;
+    }
+
+    offsetFile.close();
+    std::cout << output << " created successfully." << std::endl;
 
 }
 
-void exportMergeData(Gcx& gcx, const std::string& input, std::string& output) {
+int main(int argc, char* argv[]) {
+    if (argc < 3) {
+        std::cerr << "Usage: " << argv[0] << " [-x|-w] [options]..." << std::endl;
+        return 1;
+    }
 
-    std::string foldername = getExtensionlessName(input) + "_merge";
-    updateDir(foldername, output);
-
-    std::string Filename = "scenerio.gcx";
-    gcx.outMergedData(Filename, output);
-
-}
-
-
-
-    const char* Create(const char* gcxFile, const char* binFile)
-    {
-        std::string output = "";
-        Gcx gcx = Gcx(gcxFile);
-        Gcx bin = Gcx(binFile);
+    if (std::string(argv[1]) == "-x") {
+        int expected = 3; // 定义期望的参数数量
+        if (argc != expected) {
+            std::cerr << "Usage: " << argv[0] << " -x <gcx_file>" << std::endl;
+            return 1;
+        }
+        Gcx gcx(argv[2]);
         gcx.open();
-        uint32_t seed = gcx.blockHeader->seed;
-        bin.decodeBuffer(seed, bin.Data, bin.Size);
-
-        memcpy(gcx.blockStart + gcx.blockHeader->stringResourcesOffset, bin.Data, gcx.getResourcesSize());
-        exportMergeData(gcx, gcxFile, output);
-    
-        // 分配内存并使用 strcpy_s 安全复制字符串
-        char* result = new char[output.size() + 1];
-        strcpy_s(result, output.size() + 1, output.c_str()); // 修复：指定缓冲区大小
-        return result;
-    }
-
-void Extract(const char* gcxFile)
-{
-    std::string output = "";
-    Gcx gcx = Gcx(gcxFile);
-    gcx.open();
-    gcx.decryptStringResources();
-    exportResources(gcx, gcxFile,output);
-}
-
-
-
-void useage()
-{
-    printf("CreateScenerio:-c gcx_file_path bin_file_path\n");
-    printf("ExtractScenerio:-e .gcx_file_path\n");
-    printf("psn's addtion:otherArgument -k Key (ex:stage/init)\n");
-}
-
-int main(int argc, const char* argv[])
-{
-    // 判断命令行参数
-    if (argc > 3 && strcmp(argv[1], "-c") == 0)
-    {
-        const char*filepath = Create(argv[2], argv[3]);
-        if(argc == 6 && strcmp(argv[4], "-k") == 0)
-        {
-            cliCrypt(1, filepath, argv[5]);
+        ExtractStringData(gcx);
+    } else if (std::string(argv[1]) == "-w") {
+        int expected = 5; // 定义期望的参数数量
+        if (argc != expected) {
+            std::cerr << "Usage: " << argv[0] << " -w <txt_file> <base_offset> <gcx_file>" << std::endl;
+            return 1;
         }
-        delete[] filepath;
+        const char* txtFile = argv[2];
+        const char* baseOffset = argv[3];
+        const char* gcxFile = argv[4];
+        TXT txt(txtFile, baseOffset);
+        Gcx gcx(gcxFile);
+        gcx.open();
+        txt.WriteStringToGcxdata(gcx);
+        
+        // 创建备份文件
+        std::string backupFile = std::string(gcxFile) + ".bak";
+        copyFile(gcxFile, backupFile);
+        
+        // 保存修改后的文件
+        gcx.save(gcxFile);
+    } else {
+        std::cerr << "未知的模式: " << argv[1] << std::endl;
+        return 1;
     }
-    else if (argc > 2 && strcmp(argv[1], "-e") == 0)
-    {
-        if(argc == 5 && strcmp(argv[3], "-k") == 0)
-        {
-            cliCrypt(0, argv[2], argv[4]);
-        }
-        Extract(argv[2]);
-
-    }
-    else
-    {
-        useage();
-    }
-
     return 0;
 }

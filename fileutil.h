@@ -104,21 +104,6 @@ int64_t getFileSize(const std::string& input) {
 
 
 inline
-void writeDataToFile(uint8_t* data, int size, const std::string& filename, std::string& output) {
-
-	if (!std::filesystem::exists(output))
-		std::filesystem::create_directories(output);
-
-	updateDir(filename, output);
-
-	std::ofstream ofs(output, std::ofstream::app | std::ofstream::binary);
-	ofs.write((char*)data, size);
-	//ofs << "HPSY"; 
-	ofs.close();
-
-}
-
-inline
 void writecryptDataToFile(uint8_t* data, int size, const std::string& filename, std::string& output) {
 	createDirectory(output);
 	updateDir(filename, output);

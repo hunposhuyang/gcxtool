@@ -1,8 +1,16 @@
 #pragma once
 #include <sstream>
 #include <fstream>
-#include <filesystem>
 #include <iostream>
+#if __has_include(<filesystem>)
+#include <filesystem>
+namespace fs = std::filesystem;
+#elif __has_include(<experimental/filesystem>)
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#else
+#error "No filesystem support"
+#endif
 
 inline
 bool copyFile(const std::string& src, const std::string& dest) {
@@ -55,11 +63,6 @@ void resetDir(std::string& output) {
 	output = p.parent_path().u8string();
 }
 
-inline
-std::string getCurrentDir(std::string& output) {
-	std::filesystem::path p{ output };
-	return p.filename().u8string();
-}
 
 inline
 std::string getExtension(std::string& output) {

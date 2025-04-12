@@ -16,8 +16,8 @@ struct GcxBlockHeader {
 };
 
 struct StringTable {
-    uint32_t offset; // 字符串的偏移量
-    std::string string; // 字符串内容
+    uint32_t offset; 
+    std::string string; 
 };
 
 class Gcx {
@@ -29,7 +29,7 @@ public:
 	void CreateOffsetStringMap();
 
 	uint8_t* data;
-	std::vector<StringTable> stringTables; // 存储字符串表的动态数组
+	std::vector<StringTable> stringTables; 
 	std::string gcxfilepath = "scenerio.gcx";
 	void DecryptStringData();
     void save(const std::string& filename);

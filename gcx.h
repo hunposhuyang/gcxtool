@@ -31,8 +31,7 @@ public:
 	uint8_t* data;
 	std::vector<StringTable> stringTables; // 存储字符串表的动态数组
 	std::string gcxfilepath = "scenerio.gcx";
-
-    // 新增保存方法
+	void DecryptStringData();
     void save(const std::string& filename);
 
 private:
@@ -61,9 +60,7 @@ private:
 
 	void setNumProc();
 	void setNumResource();
-
 	bool isScriptResource(int idx);
-	void CryptStringData();
 	void CryptBuffer(uint32_t seed, uint8_t* src, int size);
 	void setProc();
 	bool isValidString(const std::string& str);

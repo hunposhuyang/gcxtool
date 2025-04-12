@@ -79,13 +79,14 @@ void Gcx::CryptBuffer(uint32_t seed, uint8_t* src, int size) {
 	}
 }
 
-void Gcx::CryptStringData() {
-	if (!blockHeader->seed) return;
-	int size = blockHeader->fontDataOffset - blockHeader->stringDataOffset;
-	uint8_t* stringTableData = &blockStart[blockHeader->stringDataOffset];
-	if (!size) return;
-	CryptBuffer(blockHeader->seed, stringTableData, size);
-	blockHeader->seed = 0;
+void Gcx::DecryptStringData() {
+    if (!blockHeader->seed) return;
+    int size = blockHeader->fontDataOffset - blockHeader->stringDataOffset;
+    uint8_t* stringTableData = &blockStart[blockHeader->stringDataOffset];
+    if (!size) return;
+
+    uint32_t seed = blockHeader->seed; // 保存 seed 的值到局部变量
+    CryptBuffer(seed, stringTableData, size); // 使用局部变量
 }
 
 GcxProc Gcx::getMainProc() {
@@ -114,7 +115,7 @@ void Gcx::open() {
 	
 	resourceTable = (uint32_t*)&blockStart[blockHeader->resourceTableOffset];	
 	setNumResource();
-	CryptStringData();
+	DecryptStringData();
 	setProc();
 }
 

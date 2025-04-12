@@ -1,7 +1,7 @@
 {
     
     "cmake.debugConfig": {
-    "args": ["-x", "F:/Amgs4items/MGS4render/scenerio/_stage/init/scenerio.gcx"]
+    "args": ["-w","F:/Amgs4items/MGS4render/scenerio/stage/init/scenerio_init.txt","0","F:/Amgs4items/MGS4render/scenerio/stage/init/scenerio.gcx"]
     },
         
     "files.associations": {

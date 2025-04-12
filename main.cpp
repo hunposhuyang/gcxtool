@@ -114,7 +114,7 @@ int main(int argc, char* argv[]) {
         Gcx gcx(gcxFile);
         gcx.open();
         txt.WriteStringToGcxdata(gcx);
-        
+        gcx.open();
         gcx.save(gcxFile);
         if (key != nullptr) {
             FileCrypt(true, gcxFile, key); // 加密文件

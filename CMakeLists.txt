@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10.0)
 project(gcxtool VERSION 0.1.0 LANGUAGES C CXX)
 
-add_executable(gcxtool main.cpp gcx.cpp crypto.cpp md5.cpp blowfish.cpp decryptor.cpp) 
+add_executable(gcxtool main.cpp gcx.cpp) 
 
 
 #设置可执行文件的名称和路径

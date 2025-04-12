@@ -1,9 +1,15 @@
 {
     
     "cmake.debugConfig": {
-        //"args": ["-x","F:/Amgs4items/MGS4render/scenerio/stage/title_movie/scenerio.gcx"]
+        // "args": ["-x","F:/Amgs4items/MGS4render/scenerio/stage/title_movie/scenerio.gcx"]
 
-        "args": ["-w","F:/Amgs4items/MGS4render/scenerio/stage/title_movie/scenerio_title_movie.txt","0","F:/Amgs4items/MGS4render/scenerio/stage/title_movie/scenerio.gcx", "-k", "stage/title_movie"]
+        "args": ["-w",
+        "F:/Amgs4items/MGS4render/scenerio/stage/title_movie/scenerio_title_movie.txt",
+        "0",
+        "F:/Amgs4items/MGS4render/scenerio/stage/title_movie/scenerio.gcx",
+        "-k",
+        "stage/title_movie"
+    ]
 },
         
     "files.associations": {

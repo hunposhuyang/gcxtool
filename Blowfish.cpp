@@ -6,8 +6,8 @@
 //    Cryptography", Second Edition.
 
 #include <cstring>
-#include <stdexcept>
 #include "blowfish.h"
+#include <exception>
 
 //Initialization with a fixed string which consists of the hexadecimal digits of PI (less the initial 3)
 //P-array, 18 32-bit subkeys
@@ -290,14 +290,14 @@ const unsigned int CBlowFish::scm_auiInitS[4][256] = {
 CBlowFish::CBlowFish(unsigned char* ucKey, size_t keysize, const SBlock& roChain) : m_oChain0(roChain), m_oChain(roChain)
 {
 	if (keysize < 1)
-		throw std::runtime_error("Incorrect key length");
+		throw std::exception("Incorrect key length");
 	//Check the Key - the key length should be between 1 and 56 bytes
 	if (keysize > 56)
 		keysize = 56;
 	unsigned char aucLocalKey[56];
 	unsigned int i, j;
 	memcpy(aucLocalKey, ucKey, keysize);
-	//Reflexive Initialization of the blowfish.
+	//Reflexive Initialization of the Blowfish.
 	//Generating the Subkeys from the Key flood P and S boxes with PI
 	memcpy(m_auiP, scm_auiInitP, sizeof m_auiP);
 	memcpy(m_auiS, scm_auiInitS, sizeof m_auiS);
@@ -324,7 +324,7 @@ CBlowFish::CBlowFish(unsigned char* ucKey, size_t keysize, const SBlock& roChain
 		}
 		m_auiP[i] ^= x;
 	}
-	//Reflect P and S boxes through the evolving blowfish
+	//Reflect P and S boxes through the evolving Blowfish
 	SBlock block(0UL, 0UL); //all-zero block
 	for (i = 0; i < 18; )
 		Encrypt(block), m_auiP[i++] = block.m_uil, m_auiP[i++] = block.m_uir;
@@ -432,7 +432,7 @@ void CBlowFish::Encrypt(unsigned char* buf, size_t n, int iMode)
 {
 	//Check the buffer's length - should be > 0 and multiple of 8
 	if ((n == 0) || (n % 8 != 0))
-		throw std::runtime_error("Incorrect buffer length");
+		throw std::exception("Incorrect buffer length");
 	SBlock work;
 	if (iMode == CBC) //CBC mode, using the Chain
 	{
@@ -475,7 +475,7 @@ void CBlowFish::Decrypt(unsigned char* buf, size_t n, int iMode)
 {
 	//Check the buffer's length - should be > 0 and multiple of 8
 	if ((n == 0) || (n % 8 != 0))
-		throw std::runtime_error("Incorrect buffer length");
+		throw std::exception("Incorrect buffer length");
 	SBlock work;
 	if (iMode == CBC) //CBC mode, using the Chain
 	{
@@ -520,7 +520,7 @@ void CBlowFish::Encrypt(const unsigned char* in, unsigned char* out, size_t n, i
 {
 	//Check the buffer's length - should be > 0 and multiple of 8
 	if ((n == 0) || (n % 8 != 0))
-		throw std::runtime_error("Incorrect buffer length");
+		throw std::exception("Incorrect buffer length");
 	SBlock work;
 	if (iMode == CBC) //CBC mode, using the Chain
 	{
@@ -563,7 +563,7 @@ void CBlowFish::Decrypt(const unsigned char* in, unsigned char* out, size_t n, i
 {
 	//Check the buffer's length - should be > 0 and multiple of 8
 	if ((n == 0) || (n % 8 != 0))
-		throw std::runtime_error("Incorrect buffer length");
+		throw std::exception("Incorrect buffer length");
 	SBlock work;
 	if (iMode == CBC) //CBC mode, using the Chain
 	{
@@ -601,4 +601,3 @@ void CBlowFish::Decrypt(const unsigned char* in, unsigned char* out, size_t n, i
 		}
 	}
 }
-

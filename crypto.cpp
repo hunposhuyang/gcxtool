@@ -96,7 +96,7 @@ void Crypto::encrypt(std::string& filepath, std::string output) {
 	calculateChecksum(file, size);
 
 	std::string outputFile = getCurrentDir(filepath);
-	writecryptDataToFile(file, size, outputFile, output);
+	writeDataToFile(file, size, outputFile, output);
 }
 
 void Crypto::decrypt(std::string& filepath, std::string output) {
@@ -106,5 +106,5 @@ void Crypto::decrypt(std::string& filepath, std::string output) {
 	decryptor.decodeFile(key, 0, size, file);
 	int outSize = size - 0x18;
 	std::string outputFile = getCurrentDir(filepath);
-	writecryptDataToFile(file, outSize, outputFile, output);
+	writeDataToFile(file, outSize, outputFile, output);
 }

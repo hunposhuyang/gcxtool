@@ -154,6 +154,9 @@ bool Gcx::isValidString(const std::string& str) {
     // 首先验证整个字符串是有效的UTF-8
     if (!isValidUTF8(str)) return false;
 
+    // 如果字符串长度小于等于3个字节，则返回false
+    if (str.size() <= 3) return false;
+
     for (size_t i = 0; i < str.size();) {
         unsigned char c = str[i];
         if (c < 0x80) { // ASCII字符

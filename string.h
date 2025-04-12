@@ -50,12 +50,10 @@ void TXT::WriteStringToGcxdata(Gcx &gcx)
         size_t length = op.content.size();
 
         // 写入内容并添加字符串结束符
-        for (size_t i = 0; i <= length; ++i) { // 包含 '\0'
+        for (size_t i = 0; i <= length; ++i) {
             if (i < length) {
                 *target++ = static_cast<uint8_t>(content[i]);
-            } else {
-                *target++ = '\0'; // 确保字符串结束符被写入
-            }
+            } 
         }
     }
 }
@@ -83,7 +81,7 @@ std::vector<MemoryOperation> TXT::process_file(std::string& stringFile, uintptr_
             uintptr_t offset = std::stoull(offset_str, nullptr, 0);
             operations.push_back({
                 base_address + offset,
-                content + '\0'  // 添加字符串结束符
+                content
                 });
         }
         catch (const std::invalid_argument&) {

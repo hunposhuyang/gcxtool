@@ -34,9 +34,14 @@ void FileCrypt(bool mode, const char* gcxFilepath, const char* Key) {
     Crypto crypto(Key);
 
     if (mode) {
+        std::string backupFile = input + "_noncrypt.bak";
+        if (!copyFile(input, backupFile)) {
+            printf("Failed to create backup file: %s\n", backupFile.c_str());
+            return;
+        }
         crypto.encrypt(input, outputFile);
     } else {
-        std::string backupFile = input + "_enc.bak";
+        std::string backupFile = input + "_encrypt.bak";
         if (!copyFile(input, backupFile)) {
             printf("Failed to create backup file: %s\n", backupFile.c_str());
             return;
@@ -73,6 +78,7 @@ void printUsage(const char* programName) {
     std::cerr << "  -x <gcx_file>        Extract string data from GCX file" << std::endl;
     std::cerr << "  -w <txt_file> <base_offset> <gcx_file>  Write string data to GCX file" << std::endl;
     std::cerr << "  -k <key>             Key for encryption/decryption" << std::endl;
+    std::cerr << "  -k <key> <gcx_file>  encryption/decryption" << std::endl;
 }
 
 int main(int argc, char* argv[]) {
@@ -100,16 +106,12 @@ int main(int argc, char* argv[]) {
         Gcx gcx(gcxFile);
         gcx.open();
         ExtractStringData(gcx);
-        if (key != nullptr) {
-            FileCrypt(true, gcxFile, key); // 加密文件
-        }
+
     } else if (mode == "-w" && (argc == 5 || (argc == 7 && key != nullptr))) {
         const char* txtFile = argv[2];
         const char* baseOffset = argv[3];
         const char* gcxFile = argv[4];
-        if (key != nullptr) {
-            FileCrypt(false, gcxFile, key); // 解密文件
-        }
+
         TXT txt(txtFile, baseOffset);
         Gcx gcx(gcxFile);
         gcx.open();
@@ -119,7 +121,11 @@ int main(int argc, char* argv[]) {
         if (key != nullptr) {
             FileCrypt(true, gcxFile, key); // 加密文件
         }
-    } else {
+    } else if (mode == "-k" && argc == 4 && key != nullptr)
+    {
+        const char* gcxFile = argv[3];
+        FileCrypt(true, gcxFile, key); // 加密文件
+    }else {
         printUsage(argv[0]);
         return 1;
     }

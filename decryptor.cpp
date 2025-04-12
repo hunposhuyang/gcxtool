@@ -47,7 +47,7 @@ uint32_t Decryptor::decodeBuffer(uint32_t keyA, uint32_t keyB, unsigned int offs
     uint32_t* srcP = (uint32_t*)src;
     size /= 4;
 
-    for (unsigned int i = offset; i < size; i++) {
+    for (int i = offset; i < size; i++) {
         uint32_t interval = keyA * KEY;
         srcP[i] ^= keyA;
         keyA = interval + keyB;
@@ -59,7 +59,7 @@ uint64_t Decryptor::decodeBuffer64(uint64_t keyA[8], uint64_t keyB, unsigned int
     uint64_t* srcP = (uint64_t*)src;
     size /= 8;
 
-    for (unsigned int i = offset; i < size; i++) {
+    for (int i = offset; i < size; i++) {
         uint64_t interval = srcP[i];
         srcP[i] ^= keyB ^ keyA[(i % 7) + 1];
         keyB = enc ? srcP[i] : interval;
